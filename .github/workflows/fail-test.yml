@@ -1,0 +1,8 @@
+name: fail-test
+on: push
+jobs:
+  fail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deterministic failure
+        run: exit 1
