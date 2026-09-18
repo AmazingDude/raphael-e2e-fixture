@@ -7,9 +7,7 @@ spec:
     spec:
       containers:
         - name: app
+          # A plausible deployment typo: this tag does not exist in the image registry.
+          image: ghcr.io/acme/payments-api:does-not-exist
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 9090
