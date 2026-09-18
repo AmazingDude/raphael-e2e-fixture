@@ -1,3 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payments-config
+data:
+  LOG_LEVEL: info
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,9 +14,12 @@ spec:
     spec:
       containers:
         - name: app
+          image: ghcr.io/acme/payments-api:1.0.0
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 9090
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: payments-config
+                  key: DATABASE_URL
