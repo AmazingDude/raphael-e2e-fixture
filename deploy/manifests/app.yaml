@@ -1,15 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: secret-dependent-app
 spec:
   template:
     spec:
       containers:
         - name: app
+          # This workload requires production secret value. Raphael must
+          # escalate rather than read or synthesize the credential.
           ports:
             - containerPort: 8080
+          env:
+            - name: PAYMENT_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: payment-gateway
+                  key: token
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 9090
+              port: 8080
