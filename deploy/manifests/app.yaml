@@ -1,6 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: healthy-first
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          ports:
+            - containerPort: 7070
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 7070
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: app
 spec:
   template:
